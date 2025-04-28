@@ -4,10 +4,11 @@ const directions = document.getElementById('directions');
 const serverImg = document.getElementById('serverImg');
 
 class Step{
-    constructor(narrator, codeImg, serverImg , otherProps = {}){
-        this.narrator = narrator
-        this.codeImg = codeImg
-        this.serverImg = serverImg
+    constructor(narrator, fixInstructions, serverImg, bossImg , otherProps = {}){
+        this.narrator = narrator;
+        this.fixInstructions = fixInstructions;
+        this.serverImg = serverImg;
+        this.bossImg = bossImg;
         this.subSteps = [];
         this.next = null;
         this.prev = null;
@@ -18,6 +19,16 @@ class Step{
     addSubStep(subStep){
         this.subSteps.push(subStep);
         return this;
+    }
+}
+
+class subStep{
+    constructor(innerMonologue, changesImg = null, icon = null){
+        this.innerMonologue = innerMonologue;
+        this.changesImg = changesImg;
+        this.icon = icon;
+        
+        Object.assign(this, picture)
     }
 }
 
@@ -91,13 +102,24 @@ class List{
             return {
                 type: 'mainstep',
                 content: this.currentStep,
+                mainStep: this.currentStep,
                 subStepIndex: -1,
             };
         }
     }
 
     displayCurrentContent(){
-        const stepData = this.getCurrentContent();
+        const {
+            type,
+            content,
+            mainStep,
+            subStepIndex
+        } = this.getCurrentContent();
+        if (type === 'substep'){
+            
+        }else{
+
+        }
     }
 
     reset(){
