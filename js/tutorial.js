@@ -1,7 +1,23 @@
+// overAllInstructions variables
+const mainStepBox = document.getElementById('overAllInstructions');
 const narrator = document.getElementById('narrator');
-const codeImg = document.getElementById('codeImg');
+const bossImg = document.getElementById('bossImg');
 const directions = document.getElementById('directions');
+
+// innerMonologue Variables
+const subStepBox = document.getElementById('innerMonologue');
+const subStepText = document.getElementById('subStepText');
+const subStepImg = document.getElementById('subStepImg');
+const subStepIcon = document.getElementById('subStepIcon');
+
+// server image variable
 const serverImg = document.getElementById('serverImg');
+
+// next and prev buttons
+const mainPrev = document.getElementById('mainPrevBtn');
+const mainNext = document.getElementById('mainNextBtn');
+const subPrev = document.getElementById('subPrevBtn');
+const subNext = document.getElementById('subNextBtn');
 
 class Step{
     constructor(narrator, fixInstructions, serverImg, bossImg , otherProps = {}){
@@ -22,13 +38,11 @@ class Step{
     }
 }
 
-class subStep{
+class SubStep{
     constructor(innerMonologue, changesImg = null, icon = null){
         this.innerMonologue = innerMonologue;
         this.changesImg = changesImg;
         this.icon = icon;
-        
-        Object.assign(this, picture)
     }
 }
 
@@ -65,7 +79,6 @@ class List{
             this.currentSubStepIndex = -1;
             this.displayCurrentContent();
         }
-        // to do add display animation!!!
         return null;
     }
 
@@ -109,6 +122,7 @@ class List{
     }
 
     displayCurrentContent(){
+        console.log('attempting')
         const {
             type,
             content,
@@ -116,9 +130,23 @@ class List{
             subStepIndex
         } = this.getCurrentContent();
         if (type === 'substep'){
-            
-        }else{
-
+            subStepBox.classList.remove('hidden');
+            if (serverImg.src !== mainStep.serverImg){
+                serverImg.src = mainStep.serverImg;
+            }
+            subStepText.textContent = content.innerMonologue;
+            if (content.changesImg){
+                subStepImg.src = content.changesImg;
+            }
+            if (content.icon){
+                subStepIcon.textContent = content.icon;
+            }
+        }else if(type === 'mainstep'){
+            subStepBox.classList.add('hidden');
+            narrator.textContent = mainStep.narrator;
+            serverImg.src = mainStep.serverImg;
+            bossImg.src = mainStep.bossImg;
+            directions.textContent = mainStep.fixInstructions;
         }
     }
 
@@ -128,3 +156,57 @@ class List{
         this.displayCurrentContent();
     }
 }
+const list = new List();
+const step1 = new Step(
+    'Project Manager',
+    `Nice job! You've just gotten our server running exactly the way we asked you to!.......... but..... you should have known that I wanted it done differently. You need to make it fit into industry best practices, and convert this whole thing to the MVC format.`,
+    'images/full-server.png',
+    'images/bobs.jpeg'
+);
+const step1a = new SubStep(
+    `didnt he just say nice job?? and why in the hell would i have thought to do that? and what the hell is mvc?`,
+    null,
+    `&#129318;`
+);
+const step1b = new SubStep(
+    `whatever, i guess ive gota figure this out.. it seems like its basically the same thing, just organized a little differently`,
+    null,
+    `&1F926;`
+);
+step1.addSubStep(step1a);
+step1.addSubStep(step1b);
+list.appendStep(step1);
+const moveOver = list.next.bind(list);
+const moveBack = list.prev.bind(list);
+[mainNext,subNext].forEach(btn => btn.addEventListener('click', moveOver))
+// [mainPrev,subPrev].forEach(btn => btn.addEventListener('click', moveBack))
+mainPrev.addEventListener('click', moveBack)
+subPrev.addEventListener('click', moveBack)
+// console.log({mainNext,subNext,mainPrev,subPrev})
+list.displayCurrentContent();
+// class Step{
+//     constructor(narrator, fixInstructions, serverImg, bossImg , otherProps = {}){
+//         this.narrator = narrator;
+//         this.fixInstructions = fixInstructions;
+//         this.serverImg = serverImg;
+//         this.bossImg = bossImg;
+//         this.subSteps = [];
+//         this.next = null;
+//         this.prev = null;
+
+//         Object.assign(this, otherProps);
+//     }
+
+//     addSubStep(subStep){
+//         this.subSteps.push(subStep);
+//         return this;
+//     }
+// }
+
+// class subStep{
+//     constructor(innerMonologue, changesImg = null, icon = null){
+//         this.innerMonologue = innerMonologue;
+//         this.changesImg = changesImg;
+//         this.icon = icon;
+//     }
+// }
