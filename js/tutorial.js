@@ -163,6 +163,8 @@ class List{
     }
 }
 const list = new List();
+
+// STEP 1 and substeps
 const step1 = new Step(
     'Project Manager',
     `Nice job! You've just gotten our server running exactly the way we asked you to!.......... but..... you should have known that I wanted it done differently. You need to make it fit into industry best practices, and convert this whole thing to the MVC format.`,
@@ -172,27 +174,63 @@ const step1 = new Step(
 const step1a = new SubStep(
     `didnt he just say nice job?? and why in the hell would i have thought to do that? and what the hell is mvc?`,
     null,
-    String.fromCodePoint(0x1F621)
+    String.fromCodePoint(0x1F621) //angry face
 );
 const step1b = new SubStep(
     `whatever, i guess ive gota figure this out.. it seems like its basically the same thing, just organized a little differently`,
     null,
-    String.fromCodePoint(0x1F926)
+    String.fromCodePoint(0x1F926) //face palm
 );
 const step1c = new SubStep(
     `ok, so lets start with the M part of mvc.. it seems like i need to have a model with which to follow along when submitting data to the database`,
     null,
-    String.fromCodePoint(0x1F9E0)
+    String.fromCodePoint(0x1F9E0) //brain
 );
 const step1d = new SubStep(
     `i should prolly toss that in a models folder, and label the file with what it is.. so ill mkdir models and then touch models/Todo.js, and place my mongoose schema in there`,
     `images/server-schema.png`,
 );
+const step1e = new SubStep(
+    `except.. goddamnit.. now i need to convert the implementation so it can be exported from the models/Todo.js file.. and make sure to require mongoose here as well`,
+    `images/models-schema.png`,
+);
+const step1f = new SubStep(
+    `alright cool, that was easy enough.. and since i know that ill eventually be moving all of my get, post, put and delete methods out of the server, i wont waste the time importing the schema to the server`,
+    null,
+    String.fromCodePoint(0x1F9E0)
+);
+const step1g = new SubStep(
+    `but first, since ive taken the logic affecting database insertions out, i should prolly take out the logic involving the database connection, too`,
+    `images/server-connect.png`,
+);
+const step1h = new SubStep(
+    `and since its part of the configuration, ill move that to the config folder, and make a database.js file in which to put it.. then be certain to export it so i can still connect on the server (line 20 in server.js)`,
+    `images/config-connect.png`,
+);
+const step1i = new SubStep(
+    `lastly, now i need to make sure my server.js file imports the configuration in order to connect to the database, since everything is still technically taking place on the server and i should be done with this step`,
+    `images/new-server-connect.png`,
+    String.fromCodePoint(0x1F38A)//confetti
+);
+
+// STEP 2 and substeps
+const step2 = new Step(
+    'Coworkers',
+    `Well would ya look at that! The new version of your server (hint: look below) looks pretty good..... BUT, we're all super annoying, and even though you've extracted all of the logic regarding connecting to the database, we'll certainly find a way to screw up your server methods`,
+    'images/post-mod-server.png',
+    'images/coworkers.jpg'
+);
 step1.addSubStep(step1a);
 step1.addSubStep(step1b);
 step1.addSubStep(step1c);
 step1.addSubStep(step1d);
+step1.addSubStep(step1e);
+step1.addSubStep(step1f);
+step1.addSubStep(step1g);
+step1.addSubStep(step1h);
+step1.addSubStep(step1i);
 list.appendStep(step1);
+list.appendStep(step2);
 list.displayCurrentContent();
 
         
