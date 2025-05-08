@@ -134,6 +134,12 @@ class List{
             if (serverImg.src !== mainStep.serverImg){
                 serverImg.src = mainStep.serverImg;
             }
+            if (bossImg.src !== mainStep.bossImg){
+                bossImg.src = mainStep.bossImg;
+            }
+            if (directions.textContent !== mainStep.fixInstructions){
+                directions.textContent = mainStep.fixInstructions;
+            }
             subStepText.textContent = content.innerMonologue;
             if (!content.changesImg){
                 subStepImg.classList.add('hidden');
@@ -220,6 +226,12 @@ const step2 = new Step(
     'images/post-mod-server.png',
     'images/coworkers.jpg'
 );
+const step2a = new SubStep(
+    `just.... why?`,
+    null,
+    String.fromCodePoint(0x1F621) //angry face
+);
+// add step 1 and its substeps
 step1.addSubStep(step1a);
 step1.addSubStep(step1b);
 step1.addSubStep(step1c);
@@ -230,6 +242,9 @@ step1.addSubStep(step1g);
 step1.addSubStep(step1h);
 step1.addSubStep(step1i);
 list.appendStep(step1);
+
+// add step 2 and its substeps
+step2.addSubStep(step2a);
 list.appendStep(step2);
 list.displayCurrentContent();
 
