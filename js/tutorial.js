@@ -19,6 +19,9 @@ const subPrev = document.getElementById('subPrevBtn');
 const mainNext = document.getElementById('mainNextBtn');
 const subNext = document.getElementById('subNextBtn');
 
+// traversy link
+const publicViewsLink = 'https://www.youtube.com/watch?v=fBNz5xF-Kx4';
+
 class Step{
     constructor(narrator, fixInstructions, serverImg, bossImg , otherProps = {}){
         this.narrator = narrator;
@@ -231,6 +234,94 @@ const step2a = new SubStep(
     null,
     String.fromCodePoint(0x1F621) //angry face
 );
+const step2b = new SubStep(
+    `well at least i remembered this video from traversy media (see link at end!) about putting html files into a public folder and decided it was the same concept for ejs and views`,
+    null,
+    String.fromCodePoint(0x1F64C) //celebration hands
+);
+const step2c = new SubStep(
+    `so with the V of mvc handled (already had my ejs in a views folder), i guess the next logical step is to tackle the C`,
+    null,
+    String.fromCodePoint(0x1F9E0)
+);
+const step2d = new SubStep(
+    `this is what 'controls' the behavior of my application, so i prolly need to make a folder for that, and file for any page that has control over the application`,
+    'images/controller-folder.png',
+);
+const step2e = new SubStep(
+    `well, lets eat the biggest frog first.. ill take all of my logic regarding the todo page out first`,
+    'images/server-todo-methods.png',
+);
+const step2f = new SubStep(
+    `and ill move them to the controllers/todos.js file, while making sure theyre in a format that can be exported to be used elsewhere`,
+    'images/contro-todo-methods.png',
+);
+const step2g = new SubStep(
+    `and CRUCIALLY! ill import my Todo variable from its new place of residence in the models folder, since the todo page needs to be able to talk to the database`,
+    'images/contro-import.png',
+);
+const step2h = new SubStep(
+    `and now ill eat the little frog.. because the home page should be easier since its only one method that does need to connect to the database`,
+    'images/server-home-method.png',
+);
+const step2i = new SubStep(
+    `and again ill convert it to a form that can be exported to still be used in the server, while not actually residing there`,
+    'images/contro-home-method.png',
+);
+
+// STEP 3 and substeps
+const step3 = new Step(
+    'Clueless Boss',
+    `hey, so im gona need you to stay late today, because git blamed you.. i tried submitting our TPS reports, but the server you built (hint: see below) doesnt have any sort of route to connect with the controllers`,
+    'images/post-contro-server.png',
+    'images/lumbergh.jpg'
+);
+const step3a = new SubStep(
+    `i hate him.. i hate him so goddamn much.. this was all working a couple hours ago and i swear they told me nice job.. but goddamnit hes right, i need to make a routes folder`,
+    null,
+    String.fromCodePoint(0x1F926)
+)
+const step3b = new SubStep(
+    `orrrrr maybeeeee.. ill just burn it all!`,
+    null,
+    String.fromCodePoint(0x1F525) + String.fromCodePoint(0x1F92C) // fire + angry
+)
+const step3c = new SubStep(
+    `*SIGH* no ill just make the folder. there are only two files so it shouldnt be too difficult..`,
+    'images/routes-folder.png',
+)
+const step3d = new SubStep(
+    `ok, so these files are going to import from our controllers folder. and i need to make sure im picking from within the correct file in that folder.. so lets start with the todos again, and set up an express router`,
+    'images/router-todos-imports.png',
+)
+const step3e = new SubStep(
+    `and now since all of my methods are defined in the controllers folder, all i have to do is set up 'listeners' to call them and export them so they can be used by the server`,
+    'images/routes-todo.png',
+)
+const step3f = new SubStep(
+    `then i can do the same thing for the home page (make an express router, import the defined methods from the controllers folder, add them to the router, and export the router so the server can use it)`,
+    'images/routes-home.png',
+)
+const step3g = new SubStep(
+    `so it seems like the last thing i need to do is import the routes to the server`,
+    'images/server-route-imports.png',
+)
+const step3h = new SubStep(
+    `and set up my app to use them!`,
+    'images/server-routes-use.png',
+)
+// step 4 / conclusion
+const step4 = new Step(
+    'Self Absorbed CEO',
+    `well well well.. would you look at what a great job I!!! did!`,
+    'images/server-final.png',
+    'images/ceo.jpg'
+);
+const step4a = new SubStep(
+    `thats it.. im out`,
+    'images/blow-up.png',
+    String.fromCodePoint(0x1F926)
+)
 // add step 1 and its substeps
 step1.addSubStep(step1a);
 step1.addSubStep(step1b);
@@ -245,7 +336,32 @@ list.appendStep(step1);
 
 // add step 2 and its substeps
 step2.addSubStep(step2a);
+step2.addSubStep(step2b);
+step2.addSubStep(step2c);
+step2.addSubStep(step2d);
+step2.addSubStep(step2e);
+step2.addSubStep(step2f);
+step2.addSubStep(step2g);
+step2.addSubStep(step2h);
+step2.addSubStep(step2i);
 list.appendStep(step2);
+
+// add step 3 and its substeps
+step3.addSubStep(step3a);
+step3.addSubStep(step3b);
+step3.addSubStep(step3c);
+step3.addSubStep(step3d);
+step3.addSubStep(step3e);
+step3.addSubStep(step3f);
+step3.addSubStep(step3g);
+step3.addSubStep(step3h);
+list.appendStep(step3);
+
+// step 4 and substep / conclusion
+step4.addSubStep(step4a);
+list.appendStep(step4);
+
+
 list.displayCurrentContent();
 
         
@@ -257,4 +373,16 @@ document.addEventListener('DOMContentLoaded', () => {
     subNext.addEventListener('click', moveOver);
     mainPrev.addEventListener('click', moveBack);
     subPrev.addEventListener('click', moveBack);
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight'){
+            e.preventDefault();
+            moveOver()
+        };
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft'){
+            e.preventDefault();
+            moveBack()
+        };
+    });
 });
