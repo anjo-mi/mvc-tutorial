@@ -125,7 +125,6 @@ class List{
     }
 
     displayCurrentContent(){
-        console.log('attempting')
         const {
             type,
             content,
@@ -134,6 +133,9 @@ class List{
         } = this.getCurrentContent();
         if (type === 'substep'){
             subStepBox.classList.remove('hidden');
+            setTimeout(() => {
+                subStepBox.style.display = 'block';
+            },400)
             if (serverImg.src !== mainStep.serverImg){
                 serverImg.src = mainStep.serverImg;
             }
@@ -146,18 +148,33 @@ class List{
             subStepText.textContent = content.innerMonologue;
             if (!content.changesImg){
                 subStepImg.classList.add('hidden');
+                setTimeout(() => {
+                    subStepImg.style.display = 'none';
+                },400)
             }else{
                 subStepImg.classList.remove('hidden');
                 subStepImg.src = content.changesImg;
+                setTimeout(() => {
+                    subStepImg.style.display = 'block';
+                },400)
             }
             if (!content.icon){
                 subStepIcon.classList.add('hidden');
+                setTimeout(() => {
+                    subStepIcon.style.display = 'none';
+                },400)
             }else{
                 subStepIcon.classList.remove('hidden');
                 subStepIcon.textContent = content.icon;
+                setTimeout(() => {
+                    subStepIcon.style.display = 'block';
+                },400)
             }
         }else if(type === 'mainstep'){
             subStepBox.classList.add('hidden');
+            setTimeout(() => {
+                subStepBox.style.display = 'none';
+            },400)
             narrator.textContent = mainStep.narrator;
             serverImg.src = mainStep.serverImg;
             bossImg.src = mainStep.bossImg;
