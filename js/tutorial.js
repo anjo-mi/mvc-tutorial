@@ -55,6 +55,8 @@ class List{
         this.tail = null;
         this.currentStep = null;
         this.currentSubStepIndex = -1;
+        this.currentlyTyping = false;
+        this.typingInterval = null;
     }
 
     appendStep(step){
@@ -71,32 +73,38 @@ class List{
     }
 
     next(){
+        this.cancelTyping();
         if (!this.currentStep) return null;
 
         if (this.currentStep.subSteps.length > 0 && 
             this.currentSubStepIndex < this.currentStep.subSteps.length - 1){
-                this.currentSubStepIndex++;
+                if (!this.currentlyTyping) this.currentSubStepIndex++;
                 this.displayCurrentContent();
         }else if(this.currentStep.next){
-            this.currentStep = this.currentStep.next;
-            this.currentSubStepIndex = -1;
+            if (!this.currentlyTyping){
+                this.currentStep = this.currentStep.next;
+                this.currentSubStepIndex = -1;
+            }
             this.displayCurrentContent();
         }
         return null;
     }
 
     prev(){
+        this.cancelTyping();
         if (!this.currentStep) return null;
 
         if (this.currentSubStepIndex >= 0){
-            this.currentSubStepIndex--;
+            if (!this.currentlyTyping) this.currentSubStepIndex--;
             this.displayCurrentContent();
         }else if(this.currentStep.prev){
-            this.currentStep = this.currentStep.prev;
-            if (this.currentStep.subSteps.length > 0){
-                this.currentSubStepIndex = this.currentStep.subSteps.length - 1;
-            }else{
-                this.currentSubStepIndex = -1;
+            if (!this.currentlyTyping){
+                this.currentStep = this.currentStep.prev;
+                if (this.currentStep.subSteps.length > 0){
+                    this.currentSubStepIndex = this.currentStep.subSteps.length - 1;
+                }else{
+                    this.currentSubStepIndex = -1;
+                }
             }
             this.displayCurrentContent();
         }
@@ -124,7 +132,46 @@ class List{
         }
     }
 
-    displayCurrentContent(){
+    typeText(element,text,speed=30){
+        this.currentlyTyping = true;
+        element.textContent = '';
+
+        return new Promise(res => {
+            let i = 0;
+            this.typingInterval = setInterval(() => {
+                if (i < text.length){
+                    element.textContent += text.charAt(i);
+                    i++;
+                }else{
+                    clearInterval(this.typingInterval);
+                    this.typingInterval = null;
+                    this.currentlyTyping = false;
+                    res();
+                }
+            },speed);
+        });
+    }
+
+    cancelTyping(){
+        if (this.typingInterval){
+            clearInterval(this.typingInterval);
+            this.typingInterval = null;
+            this.currentlyTyping = false;
+        }
+        const {
+            type,
+            content,
+            mainStep
+        } = this.getCurrentContent();
+        if (type === 'substep'){
+            subStepText.textContent = content.innerMonologue;
+            directions.textContent = mainStep.fixInstructions;
+        }else if(type === ' mainstep'){
+            directions.textContent = mainStep.fixInstructions;
+        }
+    }
+
+    async displayCurrentContent(){
         const {
             type,
             content,
@@ -132,10 +179,9 @@ class List{
             subStepIndex
         } = this.getCurrentContent();
         if (type === 'substep'){
+            subStepBox.style.display = 'block';
+            void subStepBox.offsetWidth;
             subStepBox.classList.remove('hidden');
-            setTimeout(() => {
-                subStepBox.style.display = 'block';
-            },400)
             if (serverImg.src !== mainStep.serverImg){
                 serverImg.src = mainStep.serverImg;
             }
@@ -143,20 +189,22 @@ class List{
                 bossImg.src = mainStep.bossImg;
             }
             if (directions.textContent !== mainStep.fixInstructions){
-                directions.textContent = mainStep.fixInstructions;
+                if (this.currentlyTyping){
+                    directions.textContent = mainStep.fixInstructions;
+                }else{
+                    await this.typeText(directions, mainStep.fixInstructions);
+                }
             }
-            subStepText.textContent = content.innerMonologue;
             if (!content.changesImg){
                 subStepImg.classList.add('hidden');
                 setTimeout(() => {
                     subStepImg.style.display = 'none';
                 },400)
             }else{
-                subStepImg.classList.remove('hidden');
                 subStepImg.src = content.changesImg;
-                setTimeout(() => {
-                    subStepImg.style.display = 'block';
-                },400)
+                subStepImg.style.display = 'block';
+                void subStepImg.offsetWidth;
+                subStepImg.classList.remove('hidden');
             }
             if (!content.icon){
                 subStepIcon.classList.add('hidden');
@@ -164,11 +212,15 @@ class List{
                     subStepIcon.style.display = 'none';
                 },400)
             }else{
-                subStepIcon.classList.remove('hidden');
                 subStepIcon.textContent = content.icon;
-                setTimeout(() => {
-                    subStepIcon.style.display = 'block';
-                },400)
+                subStepIcon.style.display = 'block';
+                void subStepIcon.offsetWidth;
+                subStepIcon.classList.remove('hidden');
+            }
+            if (this.currentlyTyping){
+                subStepText.textContent = content.innerMonologue;
+            }else{
+                await this.typeText(subStepText, content.innerMonologue);
             }
         }else if(type === 'mainstep'){
             subStepBox.classList.add('hidden');
@@ -178,7 +230,11 @@ class List{
             narrator.textContent = mainStep.narrator;
             serverImg.src = mainStep.serverImg;
             bossImg.src = mainStep.bossImg;
-            directions.textContent = mainStep.fixInstructions;
+            if (this.currentlyTyping){
+                directions.textContent = mainStep.fixInstructions;
+            }else{
+                await this.typeText(directions, mainStep.fixInstructions);
+            }
         }
     }
 
