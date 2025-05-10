@@ -73,39 +73,41 @@ class List{
     }
 
     next(){
-        this.cancelTyping();
+        if (this.currentlyTyping){
+            this.cancelTyping();
+            return null;
+        }
         if (!this.currentStep) return null;
 
         if (this.currentStep.subSteps.length > 0 && 
             this.currentSubStepIndex < this.currentStep.subSteps.length - 1){
-                if (!this.currentlyTyping) this.currentSubStepIndex++;
+                this.currentSubStepIndex++;
                 this.displayCurrentContent();
         }else if(this.currentStep.next){
-            if (!this.currentlyTyping){
-                this.currentStep = this.currentStep.next;
-                this.currentSubStepIndex = -1;
-            }
+            this.currentStep = this.currentStep.next;
+            this.currentSubStepIndex = -1;
             this.displayCurrentContent();
         }
         return null;
     }
 
     prev(){
-        this.cancelTyping();
+        if (this.currentlyTyping){
+            this.cancelTyping();
+        }
         if (!this.currentStep) return null;
 
         if (this.currentSubStepIndex >= 0){
-            if (!this.currentlyTyping) this.currentSubStepIndex--;
+            this.currentSubStepIndex--;
             this.displayCurrentContent();
         }else if(this.currentStep.prev){
-            if (!this.currentlyTyping){
-                this.currentStep = this.currentStep.prev;
-                if (this.currentStep.subSteps.length > 0){
-                    this.currentSubStepIndex = this.currentStep.subSteps.length - 1;
-                }else{
-                    this.currentSubStepIndex = -1;
-                }
+            this.currentStep = this.currentStep.prev;
+            if (this.currentStep.subSteps.length > 0){
+                this.currentSubStepIndex = this.currentStep.subSteps.length - 1;
+            }else{
+                this.currentSubStepIndex = -1;
             }
+            
             this.displayCurrentContent();
         }
         return null;
@@ -166,7 +168,7 @@ class List{
         if (type === 'substep'){
             subStepText.textContent = content.innerMonologue;
             directions.textContent = mainStep.fixInstructions;
-        }else if(type === ' mainstep'){
+        }else if(type === 'mainstep'){
             directions.textContent = mainStep.fixInstructions;
         }
     }
