@@ -191,11 +191,7 @@ class List{
                 bossImg.src = mainStep.bossImg;
             }
             if (directions.textContent !== mainStep.fixInstructions){
-                if (this.currentlyTyping){
-                    directions.textContent = mainStep.fixInstructions;
-                }else{
-                    await this.typeText(directions, mainStep.fixInstructions);
-                }
+                await this.typeText(directions, mainStep.fixInstructions);
             }
             if (!content.changesImg){
                 subStepImg.classList.add('hidden');
@@ -219,11 +215,7 @@ class List{
                 void subStepIcon.offsetWidth;
                 subStepIcon.classList.remove('hidden');
             }
-            if (this.currentlyTyping){
-                subStepText.textContent = content.innerMonologue;
-            }else{
-                await this.typeText(subStepText, content.innerMonologue);
-            }
+            await this.typeText(subStepText, content.innerMonologue);
         }else if(type === 'mainstep'){
             subStepBox.classList.add('hidden');
             setTimeout(() => {
@@ -232,11 +224,7 @@ class List{
             narrator.textContent = mainStep.narrator;
             serverImg.src = mainStep.serverImg;
             bossImg.src = mainStep.bossImg;
-            if (this.currentlyTyping){
-                directions.textContent = mainStep.fixInstructions;
-            }else{
-                await this.typeText(directions, mainStep.fixInstructions);
-            }
+            await this.typeText(directions, mainStep.fixInstructions);
         }
     }
 

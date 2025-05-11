@@ -3,29 +3,29 @@
     box-sizing: border-box;
 }
 
+.grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr auto;
+  background: rgba(143, 37, 86, 0.685);
+}
 
-.code-block {
-    background: #f5f5f5;
-    border-radius: 4px;
-    padding: 1em;
-    margin: 1em 0;
-    font-family: monospace;
-  }
-  
-  .highlight {
-    background-color: #ffff00;
-    display: inline-block;
-    width: 100%;
-  }
+.grid .instructions,
+.grid .inner-monologue,
+.grid .container{
+  background: rgba(233, 225, 109, 0.774);
+}
   
   .container .code{
     display: block;
-    margin: 0 auto;
-    max-width: 100%;
+    margin: 10px auto;
+    max-width: 90%;
   }
 
   .instructions{
-    width: 60%;
+    position: relative;
+    grid-area: 1/1/2/2;
+    width: 95%;
     border: 4px dashed black;
     border-radius: 5%;
     margin: 0 auto 10px auto;
@@ -33,6 +33,23 @@
     transition: opacity 0.4s ease-in-out;
   }
   
+  .prev,
+  .next{
+    position: absolute;
+    bottom: 3%;
+    background: rgb(137, 137, 223);
+    color: rgba(0, 0, 0, .9);
+    border-radius: 50%;
+  }
+
+  .prev{
+    left:2%;
+  }
+
+  .next{
+    right:2%;
+  }
+
   .narrator,
   .statement,
   .reaction-img{
@@ -43,9 +60,13 @@
     opacity: 1;
     transition: opacity 0.4s ease-in-out;
   }
+
+  .statement{
+    margin-bottom: 5%;
+  }
   
   .reaction-img{
-    max-width: 50%;
+    max-width: 80%;
   }
   
   .instructions .narrator{
@@ -55,9 +76,19 @@
   .instructions .statement{
     font-size: 1.6rem;
   }
+
+  .container{
+    grid-area: 2/1/3/3;
+    width: 95%;
+    border: 4px dashed black;
+    border-radius: 5%;
+    margin: 0 auto 10px auto;
+  }
   
   .inner-monologue{
-    width: 60%;
+    position: relative;
+    grid-area: 1/2/2/3;
+    width: 95%;
     border: 4px dashed black;
     border-radius: 5%;
     margin: 0 auto 10px auto;
@@ -83,6 +114,11 @@
     .inner-monologue .sub-step-icon{
       font-size: 12rem;
     }
+
+    .sub-step-img,
+    .sub-step-icon{
+      margin-bottom: 10%;
+    }
     
     .nav{
       display: flex;
@@ -92,5 +128,44 @@
     .hidden{
         opacity: 0;
         transition: opacity 0.4s ease-in-out;
-        /* display: none; */
+    }
+
+
+    /* mobile layout */
+    @media screen and (width <= 790px) {
+      .grid{
+        grid-template-columns: 100%;
+        grid-template-rows: 1fr auto 3fr;
+      }
+
+      .inner-monologue{
+        grid-area: 2/1/3/2;
+      }
+      
+      .container{
+        grid-area: 3/1/4/2;
+      }
+
+      .prev,
+      .next{
+        position: absolute;
+        bottom: 3%;
+      }
+    
+      .prev{
+        left:2%;
+      }
+    
+      .next{
+        right:2%;
+      }
+
+      .statement{
+        margin-bottom: 12%;
+      }
+
+      .sub-step-img,
+      .sub-step-icon{
+        margin-bottom: 20%;
+      }
     }
