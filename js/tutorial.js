@@ -233,6 +233,30 @@ class List{
         this.currentSubStepIndex = -1;
         this.displayCurrentContent();
     }
+
+    detectDoubleTapClosure(){
+        let lastTap = 0;
+        let timeout;
+        return function detectDoubleTap(event) {
+            const xPos = event.touches[0].clientX;
+            const curTime = new Date().getTime();
+            const tapLen = curTime - lastTap;
+            if (tapLen < 500 && tapLen > 0) {
+              console.log('Double tapped!');
+              event.preventDefault();
+              if (xPos <= 100){
+                this.prev();
+              }else if(xPos >= window.innerWidth - 100){
+                this.next();
+              }
+            } else {
+              timeout = setTimeout(() => {
+                clearTimeout(timeout);
+              }, 500);
+            }
+            lastTap = curTime;
+        };
+      }
 }
 const list = new List();
 
@@ -431,6 +455,7 @@ list.displayCurrentContent();
 document.addEventListener('DOMContentLoaded', () => {
     const moveOver = list.next.bind(list);
     const moveBack = list.prev.bind(list);
+    const dubTap = list.detectDoubleTapClosure.bind(list);
 
     mainNext.addEventListener('click', moveOver);
     subNext.addEventListener('click', moveOver);
@@ -448,4 +473,7 @@ document.addEventListener('DOMContentLoaded', () => {
             moveBack()
         };
     });
+    // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        document.body.addEventListener('touchend', dubTap(), { passive: false });
+    // }
 });
