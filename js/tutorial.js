@@ -248,6 +248,7 @@ class List{
                 console.error('no detectable x position');
                 return;
             }
+            console.log({xPos})
             const curTime = new Date().getTime();
             const tapLen = curTime - lastTap;
             if (tapLen < 500 && tapLen > 0) {
