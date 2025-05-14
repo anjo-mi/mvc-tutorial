@@ -1,5 +1,6 @@
-# My Awesome Project
-This tutorial is designed for anyone looking to deepen their knowledge of Web Architectures!
+# MVC Tutorial App
+This application is designed for anyone looking to deepen their knowledge of Web Architectures!
+An interactive tutorial with step by step instructions to keep users engaged and informed.
 
 **Link to project:** http://anjo-mi.github.io/mvc-tutorial
 
