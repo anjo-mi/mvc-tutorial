@@ -2,12 +2,14 @@
     font-size: 62.5%;
     box-sizing: border-box;
 }
+body{
+  background: rgba(143, 37, 86, 0.685);
 
+}
 .grid{
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr auto;
-  background: rgba(143, 37, 86, 0.685);
 }
 
 .grid .instructions,
